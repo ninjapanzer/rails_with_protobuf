@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package protos;
+
+enum Diet {
+  DIET_OTHER = 0;
+  DIET_HERBAVORE = 1;
+  DIET_CARNIVORE = 2;
+}
+
+message Dinosaur {
+  string name = 1;
+  string species = 2;
+  Diet diet = 3;
+}

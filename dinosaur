@@ -1,0 +1,14 @@
+      invoke  active_record
+      create    db/migrate/20230412064714_create_inhabitants.rb
+      create    app/models/inhabitant.rb
+      invoke    test_unit
+      create      test/models/inhabitant_test.rb
+      create      test/fixtures/inhabitants.yml
+      invoke  resource_route
+       route    resources :inhabitants
+      invoke  scaffold_controller
+      create    app/controllers/inhabitants_controller.rb
+      invoke    haml
+      invoke    resource_route
+      invoke    test_unit
+      create      test/controllers/inhabitants_controller_test.rb

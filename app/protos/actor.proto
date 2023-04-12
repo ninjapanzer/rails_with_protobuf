@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package protos;
+
+enum Role {
+  ROLE_UNKNOWN = 0;
+  ROLE_SCIENTIST = 1;
+  ROLE_BUILDER = 2;
+}
+
+message User {
+  string identity = 1;
+  Role role = 2;
+}

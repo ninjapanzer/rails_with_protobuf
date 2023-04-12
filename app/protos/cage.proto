@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package protos;
+
+import "dinosaur.proto";
+
+enum Status {
+  STATUS_UNKNOWN = 0;
+  STATUS_ACTIVE = 1;
+  STATUS_DOWN = 2;
+}
+
+message Cage {
+  string name = 1;
+  Status status = 2;
+  int32 population = 3;
+  int32 capacity = 4;
+}
+
+message CageInhabitants {
+	string name = 1;
+  Status status = 2;
+	repeated Dinosaur inhabitants = 5;
+}
