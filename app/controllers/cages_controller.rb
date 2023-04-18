@@ -11,6 +11,10 @@ class CagesController < ApplicationController
 
   # GET /cages/1
   def show
+    if params[:status]
+      @cage = @cage.where(status: params[:status])
+    end
+
     render json: CageSerializer.new(@cage).serialize
   end
 

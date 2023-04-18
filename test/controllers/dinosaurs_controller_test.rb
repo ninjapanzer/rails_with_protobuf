@@ -4,7 +4,7 @@ class DinosaursControllerTest < ActionDispatch::IntegrationTest
   setup do
     @cage = cages(:one)
     @cage2 = cages(:one)
-    @inhabitant = Inhabitant.new(name: "yoda", species: "dog", diet:"DIET_CARNIVORE", cage: @cage)
+    @inhabitant = Inhabitant.new(name: "yoda", species: "SPECIES_VELOCIRAPTOR", diet:"DIET_CARNIVORE", cage_id: @cage.id)
     @inhabitant.save
   end
 
@@ -30,7 +30,7 @@ class DinosaursControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update dinosaur" do
-    patch dinosaur_url(@inhabitant), params: { dinosaur: { diet: @inhabitant.diet, group: @inhabitant.group, name: @inhabitant.name, species: @inhabitant.species, cage: @cage} }, as: :json
+    patch dinosaur_url(@inhabitant), params: { dinosaur: { diet: @inhabitant.diet, group: @inhabitant.group, name: @inhabitant.name, species: @inhabitant.species, cage_id: @cage.id} }, as: :json
     assert_response 200
   end
 

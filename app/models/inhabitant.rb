@@ -50,7 +50,6 @@ class Inhabitant < ApplicationRecord
   # set default if species is set and if its within a herbavore
   def infer_diet
   	return unless species
-  	puts species
   	if INHABITANT_HERBAVORES.include? species
   		self.diet = Protos::Dinosaur::Diet.lookup(Protos::Dinosaur::Diet::DIET_HERBAVORE)
   	elsif INHABITANT_CARNIVORES.include? species
