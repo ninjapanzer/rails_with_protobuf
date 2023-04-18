@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative '../protos/dinosaur_pb.rb'
-
 class Inhabitant < ApplicationRecord
 	INHABITANT_DIETS = [
 		INHABITANT_DIET_CARNIVORE = Protos::Diet.lookup(Protos::Diet::DIET_CARNIVORE).to_s,

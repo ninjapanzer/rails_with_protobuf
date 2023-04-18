@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative '../protos/cage_pb.rb'
-
 class Cage < ApplicationRecord
   has_many :inhabitants, -> { where(group: Inhabitant::INHABITANT_GROUP_DINOSAUR) }
 

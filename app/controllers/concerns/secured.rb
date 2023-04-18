@@ -1,6 +1,5 @@
 require 'jwt'
 require 'net/http'
-require_relative '../../protos/actor_pb.rb'
 
 module Secured
   extend ActiveSupport::Concern

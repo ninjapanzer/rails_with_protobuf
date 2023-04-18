@@ -1,5 +1,3 @@
-require_relative '../../protos/cage_pb.rb'
-
 class CageSerializer
 
 	def initialize(cage_object, target = nil)

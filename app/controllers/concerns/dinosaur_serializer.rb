@@ -1,5 +1,3 @@
-require_relative '../../protos/dinosaur_pb.rb'
-
 class DinosaurSerializer
 
 	def initialize(dinosaur_object, target = nil)
