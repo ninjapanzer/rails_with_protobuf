@@ -1,9 +1,8 @@
 require "test_helper"
-require_relative '../../app/protos/actor_pb.rb'
 
 class SecuredTest < ActiveSupport::TestCase
   def setup
-    @stub_user = Protos::User.new(identity: '12345', role: Protos::Role::ROLE_BUILDER)
+    @stub_user = Protos::Actor::User.new(identity: '12345', role: Protos::Actor::Role::ROLE_BUILDER)
   end
 
   def test_valid_token_returns_current_user
@@ -34,7 +33,7 @@ class SecuredTest < ActiveSupport::TestCase
   private
 
   class MockController < ApplicationController
-    requires_roles roles: [Protos::Role::ROLE_BUILDER]
+    requires_roles roles: [Protos::Actor::Role::ROLE_BUILDER]
     attr_accessor :request
 
     def initialize(token:)

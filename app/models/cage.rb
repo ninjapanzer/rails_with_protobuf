@@ -4,8 +4,8 @@ class Cage < ApplicationRecord
   has_many :inhabitants, -> { where(group: Inhabitant::INHABITANT_GROUP_DINOSAUR) }
 
   CAGE_STATUSES = [
-		CAGE_STATUS_ACTIVE = Protos::Status.lookup(Protos::Status::STATUS_ACTIVE).to_s,
-		CAGE_STATUS_DOWN = Protos::Status.lookup(Protos::Status::STATUS_DOWN).to_s,
+		CAGE_STATUS_ACTIVE = Protos::Cage::Status.lookup(Protos::Cage::Status::STATUS_ACTIVE).to_s,
+		CAGE_STATUS_DOWN = Protos::Cage::Status.lookup(Protos::Cage::Status::STATUS_DOWN).to_s,
   ].freeze
 
   validates :status, presence: true, inclusion: { in: CAGE_STATUSES }

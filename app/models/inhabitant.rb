@@ -2,8 +2,8 @@
 
 class Inhabitant < ApplicationRecord
 	INHABITANT_DIETS = [
-		INHABITANT_DIET_CARNIVORE = Protos::Diet.lookup(Protos::Diet::DIET_CARNIVORE).to_s,
-		INHABITANT_DIET_HERBIVORE = Protos::Diet.lookup(Protos::Diet::DIET_HERBAVORE).to_s,
+		INHABITANT_DIET_CARNIVORE = Protos::Dinosaur::Diet.lookup(Protos::Dinosaur::Diet::DIET_CARNIVORE).to_s,
+		INHABITANT_DIET_HERBIVORE = Protos::Dinosaur::Diet.lookup(Protos::Dinosaur::Diet::DIET_HERBAVORE).to_s,
 	].freeze
 
 	INHABITANT_GROUPS = [

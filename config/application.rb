@@ -16,14 +16,10 @@ require "action_view/railtie"
 require "rails/test_unit/railtie"
 require "zeitwerk"
 
-# Require the gems listed in Gemfile, including any gems
-# you've limited to :test, :development, or :production.
-Bundler.require(*Rails.groups)
+$LOAD_PATH.unshift("app/contracts/protos")
 
-module JurassicPark
-  class ProtosInflector < ::Zeitwerk::Inflector
+class ProtosInflector < ::Zeitwerk::Inflector
   def camelize(basename, abspath)
-    puts basename
     if basename =~ /\A(.*)_pb/
       super($1, abspath)
     else
@@ -32,17 +28,40 @@ module JurassicPark
   end
 end
 
+# Require the gems listed in Gemfile, including any gems
+# you've limited to :test, :development, or :production.
+Bundler.require(*Rails.groups)
+
+module JurassicPark
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
 
-    proto_autoloader = Zeitwerk::Loader.new
-    proto_autoloader.tap do |autoloader|
-      autoloader.ignore(Rails.root.join('app/contracts')) # Ignores files that might not fall into standard
-      autoloader.push_dir(Rails.root.join('app/contracts'))
+    Rails.autoloaders.each do |autoloader|
       autoloader.inflector = ProtosInflector.new
-      autoloader.setup
+      # autoloader.inflector.inflect("_pb.rb" => "")
+      # autoloader.inflector.inflect(:class_name => Proc.new { |class_name|
+      #   class_name.gsub(/Pb\z/, '').underscore
+      # })
+      proto_dir_dir = Rails.root.join("app/contracts")
+      autoloader.collapse(proto_dir_dir)
     end
+
+    Rails.autoloaders.main do |autoloader|
+      # autoloader.ignore(Rails.root.join('app/contracts')) # Ignores files that might not fall into standard
+      autoloader.push_dir(Rails.root.join('app/contracts'))
+
+      # proto_messages_dir = Rails.root.join("app/contracts/protos")
+      # autoloader.collapse(Rails.root.join('app/contracts'))
+    end
+
+    # proto_autoloader = Zeitwerk::Loader.new
+    # proto_autoloader.tap do |autoloader|
+    #   autoloader.ignore(Rails.root.join('app/contracts')) # Ignores files that might not fall into standard
+    #   autoloader.push_dir(Rails.root.join('app/contracts'))
+    #   autoloader.inflector = ProtosInflector.new
+    #   autoloader.setup
+    # end
 
     # try https://blog.arkency.com/zeitwerk-based-autoload-and-workarounds-for-single-file-many-classes/
 

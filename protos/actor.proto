@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package protos;
+package protos.actor;
 
 enum Role {
   ROLE_UNKNOWN = 0;

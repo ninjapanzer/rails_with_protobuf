@@ -7,18 +7,18 @@ require 'dinosaur_pb'
 
 Google::Protobuf::DescriptorPool.generated_pool.build do
   add_file("cage.proto", :syntax => :proto3) do
-    add_message "protos.Cage" do
+    add_message "protos.cage.Cage" do
       optional :name, :string, 1
-      optional :status, :enum, 2, "protos.Status"
+      optional :status, :enum, 2, "protos.cage.Status"
       optional :population, :int32, 3
       optional :capacity, :int32, 4
     end
-    add_message "protos.CageInhabitants" do
+    add_message "protos.cage.CageInhabitants" do
       optional :name, :string, 1
-      optional :status, :enum, 2, "protos.Status"
-      repeated :inhabitants, :message, 5, "protos.Dinosaur"
+      optional :status, :enum, 2, "protos.cage.Status"
+      repeated :inhabitants, :message, 5, "protos.dinosaur.Dinosaur"
     end
-    add_enum "protos.Status" do
+    add_enum "protos.cage.Status" do
       value :STATUS_UNKNOWN, 0
       value :STATUS_ACTIVE, 1
       value :STATUS_DOWN, 2
@@ -27,7 +27,9 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
 end
 
 module Protos
-  Cage = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("protos.Cage").msgclass
-  CageInhabitants = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("protos.CageInhabitants").msgclass
-  Status = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("protos.Status").enummodule
+  module Cage
+    Cage = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("protos.cage.Cage").msgclass
+    CageInhabitants = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("protos.cage.CageInhabitants").msgclass
+    Status = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("protos.cage.Status").enummodule
+  end
 end

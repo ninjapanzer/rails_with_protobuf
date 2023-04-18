@@ -15,7 +15,7 @@ class CageSerializer
 	end
 
 	def serialize_cage
-		Protos::Cage.new(
+		Protos::Cage::Cage.new(
 			name: @cage.name,
 			status: @cage.status,
 			capacity: @cage.capacity,
@@ -23,7 +23,7 @@ class CageSerializer
 	end
 
 	def serialize_cage_with_dinosaur
-		Protos::CageInhabitants.new(
+		Protos::Cage::CageInhabitants.new(
 			name: @cage.name,
 			status: @cage.status,
 			inhabitants: @cage.inhabitants.map { |dino| DinosaurSerializer.new(dino).serialize }

@@ -24,7 +24,6 @@ migrate:
 	@bundle exec rails db:migrate
 
 compile-proto:
-	@protoc --ruby_out=app/protos --proto_path=app/protos app/protos/*.proto
-
+	@protoc --ruby_out=app/contracts/protos --proto_path=protos protos/*.proto
 
 .PHONY: run console test setup asdf-setup migrate compile-proto
