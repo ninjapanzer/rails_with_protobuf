@@ -14,6 +14,19 @@ require "action_view/railtie"
 # require "action_cable/engine"
 # require "sprockets/railtie"
 require "rails/test_unit/railtie"
+require "zeitwerk"
+
+$LOAD_PATH.unshift("app/contracts/protos")
+
+class ProtosInflector < ::Zeitwerk::Inflector
+  def camelize(basename, abspath)
+    if basename =~ /\A(.*)_pb/
+      super($1, abspath)
+    else
+      super
+    end
+  end
+end
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -24,9 +37,33 @@ module JurassicPark
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
 
-    Rails.autoloaders.main.tap do |loader|
-      loader.ignore(Rails.root.join('app', 'protos', '*_pb.rb'))
+    Rails.autoloaders.each do |autoloader|
+      autoloader.inflector = ProtosInflector.new
+      # autoloader.inflector.inflect("_pb.rb" => "")
+      # autoloader.inflector.inflect(:class_name => Proc.new { |class_name|
+      #   class_name.gsub(/Pb\z/, '').underscore
+      # })
+      proto_dir_dir = Rails.root.join("app/contracts")
+      autoloader.collapse(proto_dir_dir)
     end
+
+    Rails.autoloaders.main do |autoloader|
+      # autoloader.ignore(Rails.root.join('app/contracts')) # Ignores files that might not fall into standard
+      autoloader.push_dir(Rails.root.join('app/contracts'))
+
+      # proto_messages_dir = Rails.root.join("app/contracts/protos")
+      # autoloader.collapse(Rails.root.join('app/contracts'))
+    end
+
+    # proto_autoloader = Zeitwerk::Loader.new
+    # proto_autoloader.tap do |autoloader|
+    #   autoloader.ignore(Rails.root.join('app/contracts')) # Ignores files that might not fall into standard
+    #   autoloader.push_dir(Rails.root.join('app/contracts'))
+    #   autoloader.inflector = ProtosInflector.new
+    #   autoloader.setup
+    # end
+
+    # try https://blog.arkency.com/zeitwerk-based-autoload-and-workarounds-for-single-file-many-classes/
 
     # Configuration for the application, engines, and railties goes here.
     #
@@ -40,13 +77,5 @@ module JurassicPark
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
-
-    config.autoload_paths << Rails.root.join('app', 'protos')
-
-    # Configure the Zeitwerk loader with a custom inflector rule
-    # inflections = ActiveSupport::Inflector.inflections(:en)
-    # inflections.acronym('PB')
-    # inflections.singular(/(.*)_pb$/, '\1_pb')
-    # inflections.plural(/(.*)_pb$/, '\1_pb')
   end
 end

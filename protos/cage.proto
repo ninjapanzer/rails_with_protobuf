@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package protos;
+package protos.cage;
 
 import "dinosaur.proto";
 
@@ -20,5 +20,5 @@ message Cage {
 message CageInhabitants {
 	string name = 1;
   Status status = 2;
-	repeated Dinosaur inhabitants = 5;
+	repeated dinosaur.Dinosaur inhabitants = 5;
 }

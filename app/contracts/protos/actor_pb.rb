@@ -5,11 +5,11 @@ require 'google/protobuf'
 
 Google::Protobuf::DescriptorPool.generated_pool.build do
   add_file("actor.proto", :syntax => :proto3) do
-    add_message "protos.User" do
+    add_message "protos.actor.User" do
       optional :identity, :string, 1
-      optional :role, :enum, 2, "protos.Role"
+      optional :role, :enum, 2, "protos.actor.Role"
     end
-    add_enum "protos.Role" do
+    add_enum "protos.actor.Role" do
       value :ROLE_UNKNOWN, 0
       value :ROLE_SCIENTIST, 1
       value :ROLE_BUILDER, 2
@@ -18,6 +18,8 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
 end
 
 module Protos
-  User = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("protos.User").msgclass
-  Role = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("protos.Role").enummodule
+  module Actor
+    User = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("protos.actor.User").msgclass
+    Role = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("protos.actor.Role").enummodule
+  end
 end

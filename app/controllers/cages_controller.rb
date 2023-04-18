@@ -1,6 +1,6 @@
 class CagesController < ApplicationController
   before_action :set_cage, only: [:show, :update, :destroy]
-  requires_roles roles: [Protos::Role::ROLE_BUILDER, Protos::Role::ROLE_SCIENTIST]
+  requires_roles roles: [Protos::Actor::Role::ROLE_BUILDER, Protos::Actor::Role::ROLE_SCIENTIST]
 
   # GET /cages
   def index

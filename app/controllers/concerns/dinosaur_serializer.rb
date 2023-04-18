@@ -1,5 +1,3 @@
-require_relative '../../protos/dinosaur_pb.rb'
-
 class DinosaurSerializer
 
 	def initialize(dinosaur_object, target = nil)
@@ -12,7 +10,7 @@ class DinosaurSerializer
 	end
 
 	def serialize_dinosaur
-		Protos::Dinosaur.new(
+		Protos::Dinosaur::Dinosaur.new(
 			name: @dinosaur.name,
 			species: @dinosaur.species,
 			diet: @dinosaur.diet,

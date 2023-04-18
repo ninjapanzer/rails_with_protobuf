@@ -1,13 +1,12 @@
 require 'jwt'
 require 'net/http'
-require_relative '../../protos/actor_pb.rb'
 
 module Secured
   extend ActiveSupport::Concern
 
   module RoleMethods
     def requires_roles(roles:)
-      @required_roles = roles.map {|role| Protos::Role.lookup(role)}
+      @required_roles = roles.map {|role| Protos::Actor::Role.lookup(role)}
     end
 
     def required_roles
@@ -32,7 +31,7 @@ module Secured
     }
 
     decoded = verify_jwt(token: extract_token_from_header, options: options).first
-    @current_user = Protos::User.new(identity: decoded["sub"], role: role_mapper(role: decoded["Role"]))
+    @current_user = Protos::Actor::User.new(identity: decoded["sub"], role: role_mapper(role: decoded["Role"]))
   end
 
   def has_role?
@@ -81,11 +80,11 @@ module Secured
   def role_mapper(role:)
     mapped = case role.downcase
       when 'builder'
-        Protos::Role::ROLE_BUILDER
+        Protos::Actor::Role::ROLE_BUILDER
       when 'scientist'
-        Protos::Role::ROLE_SCIENTIST
+        Protos::Actor::Role::ROLE_SCIENTIST
       else
-        Protos::Role::ROLE_UNKNOWN
+        Protos::Actor::Role::ROLE_UNKNOWN
     end
     mapped
   end
