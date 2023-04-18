@@ -8,8 +8,22 @@ enum Diet {
   DIET_CARNIVORE = 2;
 }
 
+enum Species {
+  SPECIES_OTHER = 0;
+  // Herbavores
+  SPECIES_BRACHIOSAURUS = 1;
+  SPECIES_STEGOSAURUS = 2;
+  SPECIES_ANKYLOSAURUS = 3;
+  SPECIES_TRICERATOPS = 4;
+  // Carnivores
+  SPECIES_TYRANNOSAURUS = 5;
+  SPECIES_VELOCIRAPTOR = 6;
+  SPECIES_SPINOSAURUS = 7;
+  SPECIES_MEGALOSAURUS = 8;
+}
+
 message Dinosaur {
   string name = 1;
-  string species = 2;
+  Species species = 2;
   Diet diet = 3;
 }

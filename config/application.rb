@@ -16,6 +16,8 @@ require "action_view/railtie"
 require "rails/test_unit/railtie"
 require "zeitwerk"
 
+# Because protofiles are born unware of their folder structure we need
+# to make sure the generated files are in the loadpath
 $LOAD_PATH.unshift("app/contracts/protos")
 
 class ProtosInflector < ::Zeitwerk::Inflector
@@ -37,31 +39,17 @@ module JurassicPark
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
 
+    # Setup our own inflector for the proto files
     Rails.autoloaders.each do |autoloader|
       autoloader.inflector = ProtosInflector.new
-      # autoloader.inflector.inflect("_pb.rb" => "")
-      # autoloader.inflector.inflect(:class_name => Proc.new { |class_name|
-      #   class_name.gsub(/Pb\z/, '').underscore
-      # })
       proto_dir_dir = Rails.root.join("app/contracts")
       autoloader.collapse(proto_dir_dir)
     end
 
+    # Add the contracts dir to zeitwerk autoloading
     Rails.autoloaders.main do |autoloader|
-      # autoloader.ignore(Rails.root.join('app/contracts')) # Ignores files that might not fall into standard
       autoloader.push_dir(Rails.root.join('app/contracts'))
-
-      # proto_messages_dir = Rails.root.join("app/contracts/protos")
-      # autoloader.collapse(Rails.root.join('app/contracts'))
     end
-
-    # proto_autoloader = Zeitwerk::Loader.new
-    # proto_autoloader.tap do |autoloader|
-    #   autoloader.ignore(Rails.root.join('app/contracts')) # Ignores files that might not fall into standard
-    #   autoloader.push_dir(Rails.root.join('app/contracts'))
-    #   autoloader.inflector = ProtosInflector.new
-    #   autoloader.setup
-    # end
 
     # try https://blog.arkency.com/zeitwerk-based-autoload-and-workarounds-for-single-file-many-classes/
 

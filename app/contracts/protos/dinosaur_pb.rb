@@ -7,13 +7,24 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
   add_file("dinosaur.proto", :syntax => :proto3) do
     add_message "protos.dinosaur.Dinosaur" do
       optional :name, :string, 1
-      optional :species, :string, 2
+      optional :species, :enum, 2, "protos.dinosaur.Species"
       optional :diet, :enum, 3, "protos.dinosaur.Diet"
     end
     add_enum "protos.dinosaur.Diet" do
       value :DIET_OTHER, 0
       value :DIET_HERBAVORE, 1
       value :DIET_CARNIVORE, 2
+    end
+    add_enum "protos.dinosaur.Species" do
+      value :SPECIES_OTHER, 0
+      value :SPECIES_BRACHIOSAURUS, 1
+      value :SPECIES_STEGOSAURUS, 2
+      value :SPECIES_ANKYLOSAURUS, 3
+      value :SPECIES_TRICERATOPS, 4
+      value :SPECIES_TYRANNOSAURUS, 5
+      value :SPECIES_VELOCIRAPTOR, 6
+      value :SPECIES_SPINOSAURUS, 7
+      value :SPECIES_MEGALOSAURUS, 8
     end
   end
 end
@@ -22,5 +33,6 @@ module Protos
   module Dinosaur
     Dinosaur = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("protos.dinosaur.Dinosaur").msgclass
     Diet = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("protos.dinosaur.Diet").enummodule
+    Species = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("protos.dinosaur.Species").enummodule
   end
 end
