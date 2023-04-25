@@ -33,3 +33,4 @@
 /vendor/bundle
 /db/test.sqlite3*
 /bin/protoc-gen-rbi
+/bin/protoc-gen-openapi

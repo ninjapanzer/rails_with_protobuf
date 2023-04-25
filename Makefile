@@ -17,9 +17,12 @@ asdf-setup:
 	asdf install protoc
 	asdf install golang
 
-init: asdf-setup deps
+init: asdf-setup deps protoc-deps
 	@bundle exec rails db:schema:load
+
+protoc-deps:
 	@GOBIN="$(shell pwd)/bin" go install github.com/coinbase/protoc-gen-rbi@latest
+	@GOBIN="$(shell pwd)/bin" go install github.com/zchee/protoc-gen-openapi@latest
 
 deps:
 	bundle config set --local path 'vendor/bundle'
@@ -37,4 +40,7 @@ compile-rbi:
 	@find app/contracts/protos/ -type d -exec sh -c 'mkdir -p "sorbet/rbi/shims/${1#app/contracts/protos/}"' sh {} \;
 	@protoc --ruby_out=app/contracts/protos --plugin=protoc-gen-rbi=$(shell pwd)/bin/protoc-gen-rbi --rbi_out=grpc=false:sorbet/rbi/shims/app/contracts/protos --proto_path=protos protos/*.proto
 
-.PHONY: init deps run console test setup asdf-setup migrate compile-proto compile-rbi
+compile-oas:
+	@protoc --plugin=protoc-gen-openapi=$(shell pwd)/bin/protoc-gen-openapi --openapi_out=docs --proto_path=protos protos/*.proto
+
+.PHONY: init deps protoc-deps run console test setup asdf-setup migrate compile-proto compile-rbi compile-oas

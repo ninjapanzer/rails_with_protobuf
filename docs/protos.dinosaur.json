@@ -1,0 +1,71 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI Spec for Istio APIs.",
+    "version": "dinosaur"
+  },
+  "components": {
+    "schemas": {
+      "protos.dinosaur.Diet": {
+        "enum": [
+          [
+            "DIET_OTHER",
+            "DIET_HERBAVORE",
+            "DIET_CARNIVORE"
+          ]
+        ],
+        "type": "string"
+      },
+      "protos.dinosaur.Dinosaur": {
+        "properties": {
+          "diet": {
+            "enum": [
+              [
+                "DIET_OTHER",
+                "DIET_HERBAVORE",
+                "DIET_CARNIVORE"
+              ]
+            ],
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "species": {
+            "enum": [
+              [
+                "SPECIES_OTHER",
+                "SPECIES_BRACHIOSAURUS",
+                "SPECIES_STEGOSAURUS",
+                "SPECIES_ANKYLOSAURUS",
+                "SPECIES_TRICERATOPS",
+                "SPECIES_TYRANNOSAURUS",
+                "SPECIES_VELOCIRAPTOR",
+                "SPECIES_SPINOSAURUS",
+                "SPECIES_MEGALOSAURUS"
+              ]
+            ],
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "protos.dinosaur.Species": {
+        "enum": [
+          [
+            "SPECIES_OTHER",
+            "SPECIES_BRACHIOSAURUS",
+            "SPECIES_STEGOSAURUS",
+            "SPECIES_ANKYLOSAURUS",
+            "SPECIES_TRICERATOPS",
+            "SPECIES_TYRANNOSAURUS",
+            "SPECIES_VELOCIRAPTOR",
+            "SPECIES_SPINOSAURUS",
+            "SPECIES_MEGALOSAURUS"
+          ]
+        ],
+        "type": "string"
+      }
+    }
+  }
+}

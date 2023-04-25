@@ -1,0 +1,39 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI Spec for Istio APIs.",
+    "version": "actor"
+  },
+  "components": {
+    "schemas": {
+      "protos.actor.Role": {
+        "enum": [
+          [
+            "ROLE_UNKNOWN",
+            "ROLE_SCIENTIST",
+            "ROLE_BUILDER"
+          ]
+        ],
+        "type": "string"
+      },
+      "protos.actor.User": {
+        "properties": {
+          "identity": {
+            "type": "string"
+          },
+          "role": {
+            "enum": [
+              [
+                "ROLE_UNKNOWN",
+                "ROLE_SCIENTIST",
+                "ROLE_BUILDER"
+              ]
+            ],
+            "type": "string"
+          }
+        },
+        "type": "object"
+      }
+    }
+  }
+}
