@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# typed: true
+# typed: strict
 
 require 'jwt'
 require 'net/http'
@@ -15,10 +15,10 @@ module Secured
 
     sig { params(roles: T::Array[Integer]).void }
     def requires_roles(roles:)
-      @required_roles = roles.map {|role| Protos::Actor::Role.lookup(role)}
+      @required_roles = T.let(roles.map {|role| Protos::Actor::Role.lookup(role)}, T.nilable(T::Array[T.nilable(Symbol)]))
     end
 
-    sig { returns(T::Array[Protos::Actor::Role]) }
+    sig { returns(T::Array[T.nilable(Symbol)]) }
     def required_roles
       @required_roles || []
     end
@@ -43,13 +43,13 @@ module Secured
     }
 
     decoded = verify_jwt(token: extract_token_from_header, options: options).first || {"failure" => "Invalid Token"}
-    @current_user = Protos::Actor::User.new(identity: decoded["sub"], role: role_mapper(role: T.must(decoded["Role"])))
+    @current_user = T.must(@current_user = T.let(Protos::Actor::User.new(identity: decoded["sub"], role: role_mapper(role: T.must(decoded["Role"]))), T.nilable(Protos::Actor::User)))
   end
 
   sig { returns(T::Boolean) }
   def has_role?
     if T.unsafe(self).class.required_roles.length > 0
-      unless T.unsafe(self).class.required_roles.include?(@current_user.role)
+      unless T.unsafe(self).class.required_roles.include?(T.must(@current_user).role)
         invalid_authentication
         false
       end
