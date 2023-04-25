@@ -1,19 +1,30 @@
+# frozen_string_literal: true
+
+# typed: true
+
 require 'jwt'
 require 'net/http'
+require 'sorbet-runtime'
 
 module Secured
   extend ActiveSupport::Concern
+  extend T::Sig
 
   module RoleMethods
+    extend T::Sig
+
+    sig { params(roles: T::Array[Integer]).void }
     def requires_roles(roles:)
       @required_roles = roles.map {|role| Protos::Actor::Role.lookup(role)}
     end
 
+    sig { returns(T::Array[Protos::Actor::Role]) }
     def required_roles
       @required_roles || []
     end
   end
 
+  sig { params(base: T.class_of(ActionController::API)).void }
   def self.included(base)
     # Define the options for JWT verification
     base.before_action :valid_token?
@@ -21,6 +32,7 @@ module Secured
     base.extend(RoleMethods)
   end
 
+  sig { returns(Protos::Actor::User) }
   def valid_token?
     options = {
       algorithm: 'RS256',
@@ -30,22 +42,27 @@ module Secured
       aud: 'your-audience'
     }
 
-    decoded = verify_jwt(token: extract_token_from_header, options: options).first
-    @current_user = Protos::Actor::User.new(identity: decoded["sub"], role: role_mapper(role: decoded["Role"]))
+    decoded = verify_jwt(token: extract_token_from_header, options: options).first || {"failure" => "Invalid Token"}
+    @current_user = Protos::Actor::User.new(identity: decoded["sub"], role: role_mapper(role: T.must(decoded["Role"])))
   end
 
+  sig { returns(T::Boolean) }
   def has_role?
-    if self.class.required_roles.length > 0
-      if !self.class.required_roles.include?(@current_user.role)
+    if T.unsafe(self).class.required_roles.length > 0
+      unless T.unsafe(self).class.required_roles.include?(@current_user.role)
         invalid_authentication
+        false
       end
     else
       invalid_authentication
+      false
     end
+    true
   end
 
   private
 
+  sig { params(token: String, options: T::Hash[Symbol, T.any(String, T::Boolean)]).returns(T::Array[T::Hash[String, String]]) }
   # Verify the JWT token
   def verify_jwt(token:, options:)
     ## Not using a live IDP
@@ -61,22 +78,21 @@ module Secured
     # end
 
     # key = OpenSSL::X509::Certificate.new(Base64.decode64(jwk['x5c'].first)).public_key
-    decoded_token = JWT.decode(token, nil, false)
-
-    decoded_token
+    JWT.decode(token, nil, false)
   end
 
+  sig { returns(String) }
   def extract_token_from_header
     auth_header = request.headers['Authorization']
     if auth_header.nil?
       token = JWT.encode({ sub: '12345', Role: 'scientist' }, nil, 'none')
      # invalid_authentication
     else
-      token = auth_header.split(' ').last
-      token
+      auth_header.split(' ').last
     end
   end
 
+  sig { params(role: String).returns(Integer) }
   def role_mapper(role:)
     mapped = case role.downcase
       when 'builder'
@@ -89,6 +105,7 @@ module Secured
     mapped
   end
 
+  sig { void }
   def invalid_authentication
     render json: { error: 'Invalid Request' }, status: :unauthorized
   end
