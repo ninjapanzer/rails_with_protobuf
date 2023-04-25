@@ -1,0 +1,6 @@
+--dir
+.
+--ignore=/tmp/
+--ignore=/vendor/bundle
+--ignore=/app/contracts/protos
+--ignore=/config/spring.rb
