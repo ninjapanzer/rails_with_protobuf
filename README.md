@@ -24,6 +24,8 @@ Techniques like this allow us to move to IPC style communication via GRPC which 
 
 Well in some cases this is a different concern than that which sorbet tries to solve. Instead of trying to be verbose about types we are instead trying to eliminate shapeless data transport and relying as often as possible on value objects. Since its easy to define and describe a protobuf it easily creates a value object when needed. These can be namespaced and because they have a constrained syntax it should be easier for engineers and product to collaborate on these with ease.
 
-Sorbet on the otherhand wishes for us to infer our internal types and supports local runtime checking. It is extremely powerful but adds a lot of noise to the code. One of the things we don't often struggle with in ruby is making sure the right type inference is met. But we do suffer from the inability to express the shape of our contracts when we use hashes. Sorbet provides a medium weight data object to enhance structs for creating simple types.
+Sorbet on the other hand wishes for us to infer our internal types and supports local runtime checking. It is extremely powerful but adds a lot of noise to the code. One of the things we don't often struggle with in ruby is making sure the right type inference is met. But we do suffer from the inability to express the shape of our contracts when we use hashes. Sorbet provides a medium weight data object to enhance structs for creating simple types.
 
-If we wanted to infer sorbet types we could add an extention to the protoc compiler to assign types to the generated files. We could also generate RBIs for our proto classes to mirror the types created by protobuf messages.
+If we wanted to infer sorbet types we could add an extension to the protoc compiler to assign types to the generated files. We could also generate RBIs for our proto classes to mirror the types created by protobuf messages.
+
+If you wanna use sorbet with this project you can run `make init` and `make compile-rbi`
